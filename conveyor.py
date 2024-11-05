@@ -1,13 +1,14 @@
+import time # This module will be used to time the outputs.
+import os # This module will be used for it functions that wipe the terminal
+
 # Fuction CHECKDATA will be used to check the data.txt file for data before returning the value.
 def CHECKDATA():
 # Initilaise Values that will be stored in the .txt file. This needs to be done here to ensure that the values are created for all situations.
 # For example, if I initliased the variables within the except statement, the programme would fail if, for example, there was only one value stored in the .txt file or it did not exist.
     totalHours = 0
-    totalProducts = 0  
-# I have used a try statement here to catch foreseeable errors, for example if the text file has a string or does not exist, default values will be used instead.
-# The with statement will open the text file for reading.        
-    try:
-        with open("data.txt", "r") as dataOperations:
+    totalProducts = 0    
+    try: # I have used a try statement here to catch foreseeable errors, for example if the text file has a string or does not exist, default values will be used instead.  
+        with open("data.txt", "r") as dataOperations: # The with statement will open the text file for reading.    
             content = dataOperations.read()
             if content:
                 value1, value2 = content.split(" ")
@@ -23,18 +24,16 @@ def CHECKDATA():
 
 
 # This function will be used to check which of the 4 Operators is operating the machine and pass their values to the OPERATION function.
-# I have used a try statement here to catch foreseeable errors, for example if the text file does not exist, it will be created and a default value of 0 written into it. 
 def CHECKOPERATOR():
     op1 = "Mahir"
     op2 = "Mark"
     op3 = "Bethany"
     op4 = "Jordan"
     opProducts = 0
-
     current = input("Who will be operating the Machine today? ")
-# This checks for op1 or "Mahir" in this case
+# The following IF statements will check who the operator is and retreive the correct file.
     if current == op1:
-            try:
+            try: # I have used a try statement here to catch foreseeable errors, for example if the text file does not exist, it will be created and a default value of 0 written into it. 
                 with open("mahir.txt", "r") as mHours:
                     content = mHours.read().strip()
                     if content:
@@ -46,7 +45,6 @@ def CHECKOPERATOR():
             except ValueError:
                 pass
             return opProducts, current
- # This checks for op2 or "Mark" in this case   
     elif current == op2:
             try:
                 with open("mark.txt", "r") as maHours:
@@ -60,7 +58,6 @@ def CHECKOPERATOR():
             except ValueError:
                 pass
             return opProducts, current
-# This checks for op3 or "Bethany" in this case
     elif current == op3:
             try:
                 with open("bethany.txt", "r") as bHours:
@@ -74,7 +71,6 @@ def CHECKOPERATOR():
             except ValueError:
                 pass
             return opProducts, current
-# This checks for op4 or "Jordan" in this case  
     elif current == op4:
             try:
                 with open("jordan.txt", "r") as jHours:
@@ -92,8 +88,6 @@ def CHECKOPERATOR():
     else:
         print("Operator not found")
         CHECKOPERATOR()
-
-
 
 
 
@@ -134,10 +128,13 @@ def OPERATION(totalHours, totalProducts, opProducts, opName):
             print("Number of itmes produced since last serive: ", totalProducts)
             print ("Number of items produced by ", opName, "is: ", opProducts)
             open("data.txt", 'w').close()
-# As .txt files cannot store integers, we need to convert them back into strings.
-            sOpProducts= str(opProducts)
-# I have used f' strings here to write back into the txt files as the operators will be dynamic and I cannot hard code which operator will be using the system.
-            with open(f"{opName.lower()}.txt", "w") as update:
+            time.sleep(10) # This command will pause the programme for 10 seconds
+            if os.name == "nt":
+                 os.system("cls") #This command will clear the terminal if run in a windows environment
+            else:
+                 os.system("clear") #This command will clear the terminal if run in a Linux environment
+            sOpProducts= str(opProducts) # As .txt files cannot store integers, we need to convert them back into strings.
+            with open(f"{opName.lower()}.txt", "w") as update: # I have used f' strings here to write back into the txt files as the operators will be dynamic and I cannot hard code which operator will be using the system.
                 update.write(sOpProducts)
             return
         else:
